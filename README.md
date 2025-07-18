@@ -34,3 +34,21 @@ curl --request POST \
     "username": "emilys",
     "password": "emilyspass"
   }'
+
+¿Cómo se guarda el registro de login? 
+
+Cuando un usuario realiza una petición POST a /api/auth/login con credenciales válidas:
+
+El AuthController recibe la petición.
+
+Llama al AuthService.
+
+El AuthService utiliza un DummyJsonClient (Feign) para enviar las credenciales a https://dummyjson.com/auth/login.
+
+Si la respuesta de DummyJSON es exitosa y devuelve tokens, el AuthService crea una nueva entidad LoginLog.
+
+Esta entidad se puebla con el nombre de usuario, la fecha y hora actuales, y los tokens recibidos.
+
+Finalmente, se utiliza 
+
+LoginLogRepository para guardar esta entidad como una nueva fila en la tabla login_log de la base de datos PostgreSQL. 
